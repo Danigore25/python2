@@ -1,4 +1,4 @@
-class animal():
+class Animal:
     name = 'Ninguno'
     years = 'None'
 
@@ -14,9 +14,22 @@ class animal():
             print('aaaaah')
 
 
-class perro(animal):
-    pass
+class Perro(Animal):
+    def __init__(self, alimentacion, peso, altura, hazruido):
+        Animal.__init__(self, alimentacion, peso, altura)
+        self.hazruido = hazruido
 
 
-class gato(animal):
+class Gato(Animal):
     usa_arenero = True
+
+    def __init__(self, alimentacion, peso, altura, hazruido):
+        Animal.__init__(self, alimentacion, peso, altura)
+        self.hazruido = hazruido
+
+
+chihuahua = Perro('omnivoro', '2', '30', 'guau')
+chihuahua.hazruido()
+
+angora = Gato('carnivoro', '5', '100', 'miau')
+angora.hazruido()
