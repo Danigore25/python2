@@ -15,8 +15,8 @@ class animal():
 
 
 class perro(animal):
-    ruido = 'ladra'
+    pass
 
 
 class gato(animal):
-    accion = 'usa_arenero'
+    usa_arenero = True
