@@ -7,11 +7,8 @@ class Animal:
         self.peso = peso
         self.altura = altura
 
-    def hazruido(self, fuerte=True):
-        if fuerte:
-            print('AAAAAAAAH')
-        else:
-            print('aaaaah')
+    def hazruido(self, ruido):
+        print(ruido)
 
 
 class Perro(Animal):
