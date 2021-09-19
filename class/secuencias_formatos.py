@@ -82,3 +82,21 @@ for gb_record in SeqIO.parse("../docs/virus.gb", "genbank"):
     # Traducir proteína.
     protein = nueva_seq.translate()
     print(protein)
+
+    # Imprimir datos del gen L.
+    print(gb_record.features[9].qualifiers['gene'])
+    start_L = gb_record.features[9].location.nofuzzy_start
+    end_L = gb_record.features[9].location.nofuzzy_end
+    sequence_L = gb_record.seq[start_L:end_L]
+    print(sequence_L)
+    rna_L = sequence_L.transcribe()
+    print(rna_L[0:5])
+    protein_L = sequence_L.translate()
+    print(protein_L)
+
+    number = len(gb_record.features) - 1
+    while number > -1:
+        if gb_record.features[number].qualifiers['gene'] == ['L']:
+            print(gb_record.features[number].qualifiers['gene'])
+            break
+        number -= 1
