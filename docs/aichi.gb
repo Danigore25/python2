@@ -1,0 +1,51 @@
+LOCUS       JN584162                 500 bp ss-RNA     linear   VRL 15-APR-2012
+DEFINITION  Aichi virus isolate 462 VP1 gene, partial cds.
+ACCESSION   JN584162
+VERSION     JN584162.1
+KEYWORDS    .
+SOURCE      Aichi virus 1
+  ORGANISM  Aichi virus 1
+            Viruses; Riboviria; Orthornavirae; Pisuviricota; Pisoniviricetes;
+            Picornavirales; Picornaviridae; Kobuvirus.
+REFERENCE   1  (bases 1 to 500)
+  AUTHORS   Jonsson,N., Wahlstrom,K., Svensson,L., Serrander,L. and
+            Lindberg,A.M.
+  TITLE     Aichi virus infection in elderly people in Sweden
+  JOURNAL   Arch. Virol. (2012) In press
+   PUBMED   22466255
+  REMARK    Publication Status: Available-Online prior to print
+REFERENCE   2  (bases 1 to 500)
+  AUTHORS   Lindberg,A.M. and Jonsson,N.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (15-AUG-2011) School of Natural Sciences, Linnaeus
+            University, Smalandsgatan 24, Kalmar, Smaland SE-391 82, Sweden
+FEATURES             Location/Qualifiers
+     source          1..500
+                     /organism="Aichi virus 1"
+                     /mol_type="genomic RNA"
+                     /isolate="462"
+                     /isolation_source="feces"
+                     /host="Homo sapiens"
+                     /db_xref="taxon:1313215"
+                     /country="Sweden"
+                     /collection_date="2009"
+     CDS             <1..>500
+                     /codon_start=3
+                     /product="VP1"
+                     /protein_id="AFH54897.1"
+                     /translation="PPDTKLENFFSFYRLLPMGGSGAPALSFPADEGTIIPLNPINWL
+                     KGADVSGIAAMLSCFTYIAADLRITLRFSNPNDNPATMLVAFAPPGATIPLKPTRQML
+                     SNFYMAEVPVSAATSTMVSFSIPYTSPLSAIPTSYFGWEDWSGTNFGQLSSGSWGNLM
+                     LIPSLS"
+ORIGIN      
+        1 tccctccaga caccaaactg gaaaacttct tctccttcta ccgcttgctg cccatgggtg
+       61 gcagcggtgc tccagctctt tctttccccg ctgacgaagg cacaatcatc ccactcaacc
+      121 caatcaattg gctcaaaggg gcggacgtct ccgggatcgc tgcgatgcta tcgtgcttca
+      181 cgtacatcgc tgcggacctg cgaatcacgc tccgcttctc caacccaaat gacaaccctg
+      241 ccaccatgct tgttgccttc gctccccctg gcgccaccat ccccctcaaa cccacgcgcc
+      301 aaatgctctc caacttctac atggcggagg tcccagtctc cgctgccacc tccaccatgg
+      361 tctctttctc catcccctac acctcccccc tctctgccat ccccacctca tacttcggat
+      421 gggaggactg gtcaggtacc aactttggcc agctctcctc cgggtcatgg ggaaacctca
+      481 tgctcatccc ctctctctct
+//
+
