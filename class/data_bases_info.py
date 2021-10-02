@@ -1,5 +1,4 @@
 from Bio import Entrez
-from pprint import pprint
 
 # Correo
 Entrez.email = "dgoretti@lcg.unam.mx"
