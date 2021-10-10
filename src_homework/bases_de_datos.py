@@ -3,7 +3,7 @@ NAME
     bases_de_datos.py
 
 VERSION
-    1.0
+    1.1
 
 AUTHOR
     Daniela Goretti Castillo León <danigore22@gmail.com> <dgoretti@lcg.unam.mx>
@@ -61,15 +61,15 @@ EXAMPLES
     Parte 2: Se tiene el archivo ids_author.txt donde se guardarán los IDs de los trabajos publicados tras realizar la
     búsqueda del autor(a) y las palabras clave; este archivo se abre. Después se pide al usuario el nombre del autor o
     autora que desea buscar, en este ejemplo se agrega el nombre Valeria Mateo-Estrada; luego se pide una palabra del
-    título relacionada con una de sus obras y se busca Phylogeographical, y al pedir otra palabra se ingresa
-    Epidemiology; al pedir la base de datos donde se va a realizar la búsqueda se escribe pubmed. Se modifican los
+    título relacionada con una de sus obras y se busca Epidemiology, y al pedir otra palabra se ingresa
+    bacteria; al pedir la base de datos donde se va a realizar la búsqueda se escribe pubmed. Se modifican los
     campos para que sea posible realizar la búsqueda y se juntan en una variable llamada termino. Se hace el handle
     usando esearch para buscar la variable termino como el campo term en la base de datos pedida en el input y se hace
     un read del handle. Al final se escriben los IDs de los archivos encontrados con el autor y alguna de las opciones
     de las palabras del título dentro del archivo ids_author.txt.
     Dentro de este archivo queda escrito:
-        IDs de la busqueda "Valeria Mateo-Estrada[AUTH] AND (Phylogeographical OR Epidemiology)" en pubmed:
-            ['34282943', '32611704']
+        IDs de la busqueda "Valeria Mateo-Estrada[AUTH] AND (Epidemiology OR bacteria)" en pubmed:
+        34282943,32611704,31406982,30625167
 
 
 GITHUB LINK
@@ -146,8 +146,15 @@ handle = Entrez.esearch(db=db, term=termino)
 result = Entrez.read(handle)
 
 # 8. Guardar lista de resultados de búsqueda en archivo.
-new.write("IDs de la busqueda \"" + termino + "\" en " + db + ": ")
-new.write(str(result["IdList"]))
+new.write('IDs de la busqueda "' + termino + '" en ' + db + ': ' + '\n')
+
+i = 0
+for num in result["IdList"]:
+    i += 1
+    if i < len(result["IdList"]):
+        new.write(str(num) + ',')
+    else:
+        new.write(str(num))
 
 # 9. Cerrar handle.
 handle.close()
