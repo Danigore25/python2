@@ -1,7 +1,8 @@
 from Bio import Entrez
-# Abrir archivo, buscar IDs.
 
 Entrez.email = "dgoretti@lcg.unam.mx"
+
+# Abrir archivo, buscar IDs.
 
 file = open("file_example.txt", "r")
 line = str(file.readlines())
