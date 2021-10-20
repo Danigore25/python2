@@ -1,167 +1,151 @@
-'''
-NAME
-    abstracts.py
+#!/usr/bin/env python
+
+'''NAME
+
+        %(progname)s
 
 VERSION
-    1.0
+
+        %(version)s
 
 AUTHOR
+
     Daniela Goretti Castillo León <danigore22@gmail.com> <dgoretti@lcg.unam.mx>
 
 DESCRIPTION
-    Este programa toma los datos de un archivo de texto llamado ids_author.txt (obtenido a través del programa
-    bases_de_datos.py), obtiene los IDs que se relacionan con las palabras en el título de un autor y una base de datos
-    específica y obtiene el abstract y las citas relacionadas con los IDs.
+
+    Obtiene el abstract y citas de un artículo de PubMed usando una lista de PMIDs. 
 
 CATEGORY
-    Búsqueda en bases de datos
+    Base de datos
 
 USAGE
-    abstracts.py [sin opciones]
+    %(usage)s
+        
 
 ARGUMENTS
-    No se requieren argumentos.
-
-PACKAGES
-    from Bio import Entrez
-
-INPUT
-    Archivo ids_author.txt previamente llenado a través del archivo bases_de_datos.py
-
-OUTPUT
-    ID, abstract de ID y citas de los IDs.
+    -h, --help            show this help message and exit
+    -i #, --input=#       list of pmids # (one identifier by line)
+                          if not specified, the standard input is used
 
 EXAMPLES
 
-    Parte 2: Se tiene el archivo ids_author.txt con la siguiente información (obtenida tras correr el programa
-    bases_de_datos.py):
+    Input:   [ -i filename]
+        34282943
+        32611704
+        31406982
+        30625167
 
-        IDs de la busqueda "Valeria Mateo-Estrada[AUTH] AND (Epidemiology OR bacteria)" en pubmed:
-        34282943,32611704,31406982,30625167
-
-    Primero se entra a Entrez por medio del correo electrónico otorgado, se abre el archivo y se leen sus líneas. Se
-    obtienen los IDS de la búsqueda por medio de la modificación del texto dentro del archivo. Si hay más de tres IDs se
-    imprimen sus abstracts por medio de Entrez.efetch. Se busca con Entrez.read y Entrez.elink las citas, especificando
-    el campo LinkName como "pubmed_pmc_refs", con un contador se van recorriendo los links y se evalúa el número de
-    citas (si es menor que 3 entonces se imprime que no hay suficientes citas, si es mayor o igual que 3 entonces se
-    imprimen las mismas).
-
-    En total hay cuatro IDs, para simplificar el encabezado se describirá lo que se imprime para el ID 31406982:
-
-        ID: 31406982
-
-        ABSTRACT DE ID 31406982:
+    Output:
+    
+        Abstract and citations
 
 
-        1. Genome Biol Evol. 2019 Sep 1;11(9):2531-2541. doi: 10.1093/gbe/evz178.
-
-        Phylogenomics Reveals Clear Cases of Misclassification and Genus-Wide
-        Phylogenetic Markers for Acinetobacter.
-
-        Mateo-Estrada V(1), Graña-Miraglia L(1), López-Leal G(1), Castillo-Ramírez S(1).
-
-        Author information:
-        (1)Programa de Genómica Evolutiva, Centro de Ciencias Genómicas, Universidad
-        Nacional Autónoma de México, Cuernavaca, México.
-
-        The Gram-negative Acinetobacter genus has several species of clear medical
-        relevance. Many fully sequenced genomes belonging to the genus have been
-        published in recent years; however, there has not been a recent attempt to infer
-        the evolutionary history of Acinetobacter with that vast amount of information.
-        Here, through a phylogenomic approach, we established the most up-to-date view of
-        the evolutionary relationships within this genus and highlighted several cases of
-        poor classification, especially for the very closely related species within the
-        Acinetobacter calcoaceticus-Acinetobacter baumannii complex (Acb complex).
-        Furthermore, we determined appropriate phylogenetic markers for this genus and
-        showed that concatenation of the top 13 gives a very decent reflection of the
-        evolutionary relationships for the genus Acinetobacter. The intersection between
-        our top markers and previously defined universal markers is very small. In
-        general, our study shows that, although there seems to be hardly any universal
-        markers, bespoke phylogenomic approaches can be used to infer the phylogeny of
-        different bacterial genera. We expect that ad hoc phylogenomic approaches will be
-        the standard in the years to come and will provide enough information to resolve
-        intricate evolutionary relationships like those observed in the Acb complex.
-
-        © The Author(s) 2019. Published by Oxford University Press on behalf of the
-        Society for Molecular Biology and Evolution.
-
-        DOI: 10.1093/gbe/evz178
-        PMCID: PMC6740150
-        PMID: 31406982  [Indexed for MEDLINE]
-
-
-        CITAS:
-
-        [{'Id': '8437295'}, {'Id': '8409315'}, {'Id': '8407383'}, {'Id': '8269215'}, {'Id': '8226933'},
-        {'Id': '8131573'}, {'Id': '8045196'}, {'Id': '7804863'}, {'Id': '7593844'}, {'Id': '7477861'},
-        {'Id': '6997731'}]
-
-
-    NOTA: En dado caso de que el número de IDs sea menor o igual que 3 entonces se imprime lo siguiente:
-        No hay suficientes IDs en el archivo ids_author.txt. Intente modificar la búsqueda en el archivo
-        "bases_de_datos.py"
-
+SEE ALSO
+        [ poner el otro programa relacionado de search author ]
 
 GITHUB LINK
-    https://github.com/Danigore25/python2/blob/master/src_homework/abstracts.py
+    https://github.com/Danigore25/python2/blob/master/src_homework/%(progname)s
+        
 
 '''
-
-# 1. Importar librería.
+# ===========================================================================
+# =                            imports
+# ===========================================================================
+import os
+import sys
+import argparse
 from Bio import Entrez
+from Bio import Medline
 
-# 2. Poner correo electrónico.
 
-Entrez.email = "dgoretti@lcg.unam.mx"
+# ===========================================================================
+# =                            functions
+# ===========================================================================
+def fetch_abstract(idlist):
+    '''Fetch the medline record for pmid list
 
-# 3. Abrir archivo ids_author.txt, obtener líneas.
+        :param idlist: The pmid list
+        :type idlist: string list
 
-file = open("../docs/ids_author.txt", "r")
-lines = str(file.readlines())
-file.close()
+        :returns: object with medline records
+        :rtype: object list
+    '''  
+    fetch_handle = Entrez.efetch(db="pubmed", id=idlist, rettype="medline", retmode="text")
+    records = list(Medline.parse(fetch_handle))
+    fetch_handle.close()
 
-# 4. Obtener IDs del archivo de búsqueda.
+    return records
 
-lines = lines.split('"')
-saltos = lines[2]
-saltos = saltos.split(' ')
-ids = saltos[4]
-ids = ids.replace(']', '')
-ids = ids.replace("'", "")
-ids = ids.split(",")
 
-# 5. Imprimir abstracts de IDs si hay igual o más de tres IDs.
+def get_cited_by(pmid):
+    '''Get the pmcid references that the input is cited by
 
-if len(ids) >= 3:
-    for id in ids:
-        print('\n' + 'ID: ' + id + "\n")
+        :param pmid: The pmid identifier
+        :type pmid: string
 
-        # 5.1. Usar efetch y leerlo.
-        fetch_handle = Entrez.efetch(db="pubmed", id=id, rettype="abstracts", retmode="text")
-        data = fetch_handle.read()
-        fetch_handle.close()
-        print("ABSTRACT DE ID " + id + ": \n")
+        :returns: pmcid list
+        :rtype: list
+    ''' 
+    get_pmc = Entrez.elink(dbfrom="pubmed", db="pmc", LinkName="pubmed_pmc_refs", from_uid=pmid)
+    search_results = Entrez.read(get_pmc)
+    if len(search_results[0]['LinkSetDb']) > 0:
+        pmc_ids = [link["Id"] for link in search_results[0]["LinkSetDb"][0]["Link"]]
+    else:
+        pmc_ids = []
+    return pmc_ids
 
-        # 5.2. Imprimir abstracts.
-        print(data)
 
-        # 6. Sacar citas.
+def main(args):
+    Entrez.email = "dgoretti@lcg.unam.mx"
 
-        # 6.1. Usar read y elink con Entrez para buscar las citas.
-        results = Entrez.read(Entrez.elink(dbfrom="pubmed", db="pmc", LinkName="pubmed_pmc_refs", from_uid=id))
-        links = results[0]["LinkSetDb"]
+    # Reading the pmids list from file
+    inputfile = open(args.input, "r")
+    pmid_list = inputfile.read().splitlines()
+    inputfile.close()
 
-        # 6.2. Imprimir y evaluar si hay citas suficientes.
-        counter = 0
-        for link in links:
-            print("CITAS: \n")
-            if (len(results[0]["LinkSetDb"][counter]["Link"])) >= 3:
-                print(results[0]["LinkSetDb"][counter]["Link"])
-            else:
-                print("No hay citas suficientes de este artículo.")
-            counter += 1
+    # fetching medline records from pmid list
+    pubmed_records = fetch_abstract(pmid_list)
 
-# 7. Imprimir mensaje si no hay suficientes IDs.
-else:
-    print("No hay suficientes IDs en el archivo ids_author.txt. Intente modificar la búsqueda en el archivo "
-          "bases_de_datos.py")
+    # Print the fields from medline record list
+    for record in pubmed_records:
+        id = record.get("PMID", "?")
+        print("PMID ",id)
+        print("TI   ",record.get("TI", "?"))
+        print("AU   ",record.get("AU", "?"))
+        print("\n")
+        print("AB   ",record.get("AB", "?"))
+
+        # get the cites for each pmid
+        cites_list = get_cited_by(id)
+        print("CITE ", cites_list)
+        print("\n//\n")
+        
+# ===========================================================================
+# =                            main
+# ===========================================================================
+if __name__ == '__main__':
+
+    USAGE = '''%s -i inputfile -o outputfile [-h]'''
+    VERSION = '20211019'
+    PROG_NAME = os.path.basename(sys.argv[0])
+
+    # arguments
+    doc =  globals()['__doc__'] % {'usage' : USAGE % PROG_NAME, 'version' : VERSION, 'progname' : PROG_NAME}
+    parser = argparse.ArgumentParser(usage=USAGE % PROG_NAME, description=doc, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("-i", "--input", action="store", dest="input", metavar="#", help="PMIDlist file")
+    #parser.add_argument("-o", "--output", action="store", dest="output", default=sys.stdout, help='output file name')   
+    args = parser.parse_args()
+
+    
+    if not args.input:
+        parser.print_usage()
+        sys.exit()
+    if len(sys.argv) == 1:
+        print(USAGE % PROG_NAME)
+        sys.exit(0)    
+    try:
+        main(args)
+    except:
+        sys.stderr.write('Error while running\n')
+    
