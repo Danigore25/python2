@@ -29,7 +29,7 @@ record1 = Entrez.read(handle, "genbank")
 print(record1[0]['Entrezgene_gene']['Gene-ref']['Gene-ref_syn'])
 
 # Buscar en uniprot
-sinonimos = record[0]['Entrezgene_gene']['Gene-ref']['Gene-ref_syn']
+sinonimos = record1[0]['Entrezgene_gene']['Gene-ref']['Gene-ref_syn']
 print([uniprot for uniprot in sinonimos if '_' in uniprot])
 
 # EJERCICIO 1
@@ -49,10 +49,12 @@ print(db_source)
 
 # EXPASY -----------------------------------------------------------------------------------------------
 
+print(apy_prot[0])
 handle = ExPASy.get_sprot_raw(apy_prot[0])
 print(handle.url)
 
 record = SwissProt.read(handle)
+# Imprimir llaves (data_class, molecule_type, accessions, created, sequence_update, etc)
 print(record.__dict__.keys())
 
 print(db_source.split(';')[0])
@@ -71,11 +73,21 @@ print(record.sequence[:10])
 
 handle = ExPASy.get_sprot_raw('P91793')
 record = SwissProt.read(handle)
+print(handle.url)
 
 # Fecha de creacion, actualización de la anotación, id de taxonomía
+print(record.__dict__.keys())
+print(record.cross_references)
 print(record.created)
 print(record.annotation_update)
 print(record.taxonomy_id)
+print(record.comments[1])
+print(record.references[0])
+
+
+for reference in record.cross_references:
+    if 'PROSITE' in reference:
+        print(reference[1])
 
 
 # Desde un archivo descargado con un solo record -----------------------------------
@@ -131,10 +143,6 @@ print(objeto_SeqRecord.__dict__)
 # print(record.__dict__.keys())
 
 # PROSITE --------------------------------------------------------------------------------------
-
-for reference in record.cross_references:
-    if 'PROSITE' in reference:
-        print(reference)
 
 handle = ExPASy.get_prosite_raw("PS00785")
 record = Prosite.read(handle)
