@@ -1,9 +1,9 @@
 import argparse
-import Bio.Entrez as Entrez
+import Bio.Entrez
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-Entrez.email = "dgoretti@lcg.unam.mx"
+Bio.Entrez.email = "dgoretti@lcg.unam.mx"
 
 print("Introduce los terminos de busqueda")
 print("Ingrese el pais en el que desea buscar")
@@ -35,10 +35,10 @@ args = parser.parse_args()
 search2 = args.country + "[CNTY] AND " + args.year + "[PDAT]"
 
 # through handle the terms in "search" will be looked for in pubmed database
-handle = Entrez.esearch(db="pubmed", term=args.word)
+handle = Bio.Entrez.esearch(db="pubmed", term=args.word)
 
 # The results that coincide with the terms in "search" are stored in result
-result = Entrez.read(handle)
+result = Bio.Entrez.read(handle)
 
 # in archiv, the list with the corresponding IDs will be stored
 archiv = result["IdList"]
