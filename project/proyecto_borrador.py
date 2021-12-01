@@ -26,7 +26,7 @@ parser.add_argument("-c", "--country",
 
 parser.add_argument("-y", "--year",
                     metavar="year of publication",
-                    type=str,
+                    type=int,
                     help="Fecha de publicacion del articulo",
                     required=True)
 
